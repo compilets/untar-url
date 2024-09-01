@@ -1,0 +1,29 @@
+{
+  "name": "@compilets/untar-url",
+  "version": "0.0.1-dev",
+  "description": "Untar remote or local .tar/.tar.gz file to local disk",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "untar-url": "dist/cli.js"
+  },
+  "scripts": {
+    "prepack": "tsc"
+  },
+  "author": "zcbenz",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/compilets/untar-url.git"
+  },
+  "bugs": {
+    "url": "https://github.com/compilets/untar-url/issues"
+  },
+  "devDependencies": {
+    "@types/node": "22.5.1",
+    "typescript": "5.4.5"
+  },
+  "dependencies": {
+    "promise-parallel-throttle": "3.5.0"
+  }
+}
