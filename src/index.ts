@@ -19,7 +19,7 @@ export async function untar(url: string, targetDir: string, options?: UntarOptio
     readable = Readable.toWeb(createReadStream(fileURLToPath(url))) as ReadableStream;
   } else {
     const response = await fetch(url);
-    if (!response.body)
+    if (!response.ok || !response.body)
       throw new Error(`fetch failed with status code: ${response.status}`);
     readable = response.body;
   }
@@ -44,7 +44,7 @@ export async function untar(url: string, targetDir: string, options?: UntarOptio
       continue;
     }
     // Write file.
-    tasks.push(() => writeFile(`${targetDir}/${file.name}`, Buffer.from(file.buffer)));
+    tasks.push(() => writeFile(`${targetDir}/${file.name}`, Buffer.from(file.buffer), {mode: file.mode}));
   }
   await Throttle.all(tasks);
 }

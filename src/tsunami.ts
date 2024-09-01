@@ -28,7 +28,7 @@
 /** Uncompressed file extracted from .tar */
 export interface UncompressedFile {
   name: string;
-  mode: string;
+  mode: number;
   buffer: ArrayBuffer;
 }
 
@@ -312,7 +312,7 @@ export class UntarFileStream {
 
     return {
       name: this.file.name,
-      mode: this.file.mode,
+      mode: parseInt(this.file.mode, 8),
       buffer: this.file.buffer || new ArrayBuffer(0)
     };
   }
@@ -411,7 +411,7 @@ export class Tsunami {
             if (!this.excludeInvalidFiles) {
               const newFile: UncompressedFile = {
                 name: header.name,
-                mode: header.mode,
+                mode: parseInt(header.mode, 8),
                 buffer: new ArrayBuffer(0)
               };
               this.files.push(newFile);
