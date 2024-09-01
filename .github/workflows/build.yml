@@ -55,13 +55,3 @@ jobs:
           token: ${{ secrets.NPM_TOKEN }}
           access: public
           ignore-scripts: false
-
-      - name: Prepare to publish non-scoped module
-        run: sed -i 's/\@compilets\/untar-url/untar-url/g' package.json
-
-      - name: Publish non-scoped npm package
-        uses: JS-DevTools/npm-publish@v3
-        with:
-          token: ${{ secrets.NPM_TOKEN }}
-          access: public
-          ignore-scripts: false
