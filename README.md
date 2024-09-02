@@ -13,7 +13,6 @@ import {untar} from '@compilets/untar-url';
 ```ts
 interface UntarOptions {
     filter?: (fileName: string) => boolean;
-    fileTypes?: RegExp[];
 }
 export declare function untar(url: string, targetDir: string, options?: UntarOptions): Promise<void>;
 ```

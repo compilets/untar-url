@@ -1,9 +1,10 @@
+import path from 'node:path';
 import {Readable} from 'node:stream';
 import {finished} from 'node:stream/promises';
 import {createGunzip} from 'node:zlib';
 import {createReadStream} from 'node:fs';
 import {mkdirSync} from 'node:fs';
-import {writeFile} from 'node:fs/promises';
+import {symlink, writeFile} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
 
 import * as tar from 'tar-mini';
@@ -36,13 +37,19 @@ export async function untar(url: string, targetDir: string, options?: UntarOptio
     if (options?.filter && !options.filter(head.name)) {
       return;
     }
+    const target = `${targetDir}/${head.name}`;
     // Create parent directory.
-    if (head.name.endsWith('/')) {
-      mkdirSync(`${targetDir}/${head.name}`, {recursive: true});
+    if (head.typeflag == tar.TypeFlag.DIR_TYPE) {
+      mkdirSync(target, {recursive: true});
       return;
     }
-    // Write head.
-    queue.add(() => writeFile(`${targetDir}/${head.name}`, file, {mode: head.mode}));
+    // Create symbol link.
+    if (head.typeflag == tar.TypeFlag.SYM_TYPE) {
+      queue.add(() => symlink(head.linkname, target));
+      return;
+    }
+    // Write file.
+    queue.add(() => writeFile(target, file, {mode: head.mode}));
   });
   await finished(readable.pipe(extract.receiver));
   await queue.done();
