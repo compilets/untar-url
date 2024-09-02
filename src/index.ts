@@ -45,7 +45,7 @@ export async function untar(url: string, targetDir: string, options?: UntarOptio
     }
     // Create symbol link.
     if (head.typeflag == tar.TypeFlag.SYM_TYPE) {
-      queue.add(() => symlink(head.linkname, target));
+      queue.add(() => symlink(head.linkname!, target));
       return;
     }
     // Write file.
