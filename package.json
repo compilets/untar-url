@@ -12,6 +12,7 @@
   },
   "author": "zcbenz",
   "license": "MIT",
+  "keywords": [ "tar", "untar", "url", "remote" ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/compilets/untar-url.git"
@@ -24,6 +25,7 @@
     "typescript": "5.4.5"
   },
   "dependencies": {
-    "promise-parallel-throttle": "3.5.0"
+    "@henrygd/queue": "1.0.6",
+    "tar-mini": "0.1.3"
   }
 }
