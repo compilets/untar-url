@@ -26,6 +26,6 @@
   },
   "dependencies": {
     "@henrygd/queue": "1.0.6",
-    "tar-mini": "0.1.3"
+    "tar-mini": "0.1.4"
   }
 }
