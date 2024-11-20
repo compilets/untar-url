@@ -24,8 +24,8 @@ jobs:
       - name: Test
         shell: bash
         run: |
-          yarn
-          yarn prepack
+          npm install
+          npm run prepack
           node dist/cli.js https://nodejs.org/dist/v22.7.0/node-v22.7.0-headers.tar.gz headers
           ls -l headers
 
@@ -35,23 +35,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '*'
+          # Required by npm publish.
+          registry-url: https://registry.npmjs.org
+
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Get tag
-        run: echo "VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-
-      - name: Set package version
+      - name: Publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          npm config set git-tag-version=false
-          npm version $VERSION
-
-      - name: Install deps
-        run: yarn
-
-      - name: Publish npm package
-        uses: JS-DevTools/npm-publish@v3
-        with:
-          token: ${{ secrets.NPM_TOKEN }}
-          access: public
-          ignore-scripts: false
+          npm install
+          npx dot-json package.json version ${GITHUB_REF_NAME#v}
+          npm publish --access public
+          npx dot-json package.json name untar-url
+          npm publish --access public --ignore-scripts

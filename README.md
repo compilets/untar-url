@@ -28,5 +28,5 @@ await untar('https://some.tar.gz', '/tmp/mytar');
 ## CLI
 
 ```sh
-npx @compilets/untar-url https://some.tar.gz /tmp/mytar
+npx untar-url https://some.tar.gz /tmp/mytar
 ```
